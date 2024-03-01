@@ -4,7 +4,7 @@ use std::sync::Mutex;
 
 lazy_static! {
     static ref VARIABLES: Mutex<HashMap<&'static str, String>> = Mutex::new(HashMap::new());
-}
+} // Mutex로 묶어서 안전성 확보
 
 #[derive(Debug)]
 enum Token {
@@ -14,7 +14,7 @@ enum Token {
     CloseBracket,
     OpenSquareBracket,
     CloseSquareBracket,
-}
+} /* 토큰 종류 정의 */
 
 fn tokenize(input: &str) -> Vec<Token> {
     let mut tokens = Vec::new();
@@ -71,7 +71,7 @@ fn tokenize(input: &str) -> Vec<Token> {
     }
 
     tokens
-}
+} /* 토큰 종류 정의 */
 
 fn evaluate_tokens(tokens: &[Token], variables: &HashMap<&str, String>) -> Vec<String> {
     let mut result = Vec::new();
@@ -82,7 +82,7 @@ fn evaluate_tokens(tokens: &[Token], variables: &HashMap<&str, String>) -> Vec<S
     for token in tokens {
         match token {
             Token::Variable(var_name) => {
-                if var_name.ends_with("]") && var_name.contains("[") {
+                if var_name.ends_with("]") && var_name.contains("[") { // 배열 and 벡터 판단 
                     let parts: Vec<&str> = var_name.split("[").collect();
                     if let Some(array_name) = parts.get(0) {
                         if let Some(index_str) = parts.get(1) {
@@ -129,21 +129,31 @@ fn evaluate_tokens(tokens: &[Token], variables: &HashMap<&str, String>) -> Vec<S
     }
 
     if !current_array.is_empty() {
-        result.push(format!("[{}]", current_array.iter().map(|i| i.to_string()).collect::<Vec<String>>().join(",")));
+        // 배열 벡터 표현식 추가 즐
+        result.push(format!(
+            "[{}]",
+            current_array
+                .iter()
+                .map(|i| i.to_string())
+                .collect::<Vec<String>>()
+                .join(",")
+        ));
     }
 
     result
-}
+} /* 토큰 리뷰 후 println! 생성 */
 
 macro_rules! printv {
     ($($arg:tt)*) => {
-        let formatted_str = format!($($arg)*);
+        let formatted_str = format!($($arg)*); // input 문자열 토큰화
         let tokens = tokenize(&formatted_str);
-        let variables = &*VARIABLES.lock().unwrap();
+        
+        let variables = &*VARIABLES.lock().unwrap(); // 전역 변수 mut lock 가져와서 unwrap
+        
         let processed_str = evaluate_tokens(&tokens, variables);
         println!("{}", processed_str.join(""));
     };
-}
+} /* 입력된 문자열 토큰화 후 결과 리뷰 */
 
 fn main() {
     let a = 3;
