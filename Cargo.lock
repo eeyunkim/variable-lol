@@ -7,8 +7,11 @@ name = "RustTest"
 version = "0.1.0"
 dependencies = [
  "druid",
+ "lazy_static",
  "num-bigint",
  "num-complex",
+ "proc-macro-hack",
+ "quote",
  "rand",
  "reqwest",
  "rsexp",
@@ -1438,6 +1441,12 @@ dependencies = [
  "quote",
  "version_check",
 ]
+
+[[package]]
+name = "proc-macro-hack"
+version = "0.5.20+deprecated"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dc375e1527247fe1a97d8b7156678dfe7c1af2fc075c9a4db3690ecd2a148068"
 
 [[package]]
 name = "proc-macro2"
