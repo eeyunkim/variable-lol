@@ -150,8 +150,6 @@ fn main() {
     let b = vec![1, 2, 3];
     let c = 5;
     let sans = "sansdgsdgs";
-    VARIABLES.lock().unwrap().insert("a", a.to_string());
-    VARIABLES.lock().unwrap().insert("b", format!("{:?}", b));
 
-    printv!("{a} is {a} {sans}");
+    printv!("{a} is {c} {sans}");
 }
